@@ -2,81 +2,84 @@ package com.ultimatum.innovata;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.parser.Parser;
+import com.ultimatum.model.fundBody;
+import org.json.JSONArray;
+
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
-@Path("/fundbodies")
+@Path("/fund")
 public class fundService {
 
     fundBody fundBodyObj = new fundBody();
     @GET
-    @Path("/")
-    @Produces(MediaType.TEXT_HTML)
-    public String readItems()
-    {
-        return fundBodyObj.readItems();
+    @Path("/all")
+    @Produces(MediaType.APPLICATION_JSON)
+    public JSONArray read() { return fundBodyObj.read();
     }
 
-    //Insert Details
     @POST
-    @Path("/")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Produces(MediaType.TEXT_PLAIN)
-    public String insertItem(@FormParam("fname") String fundBodyName,
-                             @FormParam("femail") String email,
-                             @FormParam("iname") String innovatorName,
-                             @FormParam("pname") String projectName,
-                             @FormParam("famount") String fundAmount,@FormParam("fplan") String fundPlan)
-    {
-        String output = fundBodyObj.insertItem(fundBodyName, email, innovatorName, projectName, fundAmount, fundPlan);
-        return output;
-    }
-
-    //updating
-    @PUT
-    @Path("/")
+    @Path("/insert")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
-    public String updateItem(String fundBodyData)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String insert(String fundBodyData)
     {
-        //Convert the input string to a JSON object
-        JsonObject fundBodyObject = new JsonParser().parse(fundBodyData).getAsJsonObject();
-        //Read the values from the JSON object
-        String bid = fundBodyObject.get("fid").getAsString();
-        String name = fundBodyObject.get("name").getAsString();
-        String email = fundBodyObject.get("email").getAsString();
-        String fundPlan = fundBodyObject.get("fundPlan").getAsString();
-        String output = fundBodyObj.updateItem(bid, name, email, fundPlan);
-        return output;
+        JsonObject obj = new JsonParser().parse(fundBodyData).getAsJsonObject();
+
+        String name = obj.get("name").getAsString();
+        String address = obj.get("address").getAsString();
+        String email = obj.get("email").getAsString();
+        String projectname = obj.get("projectname").getAsString();
+        String innovatorname = obj.get("innovatorname").getAsString();
+        String fundaamount = obj.get("fundamount").getAsString();
+        String fundplan = obj.get("fundplan").getAsString();
+
+        fundBodyObj.insert(name, address, email, projectname, innovatorname, fundaamount, fundplan);
+        return null;
     }
 
-    //deleting
-    @DELETE
-    @Path("/")
-    @Consumes(MediaType.APPLICATION_XML)
-    @Produces(MediaType.TEXT_PLAIN)
-    public String deleteItem(String fundBodyData)
-    {
-        //Convert the input string to an XML document
-        Document doc = Jsoup.parse(fundBodyData, "", Parser.xmlParser());
-
-        //Read the value from the element <ID>
-        String fid = doc.select("fid").text();
-        String output = fundBodyObj.deleteItem(fid);
-        return output;
-    }
-
-    //services
-    //get one person Details
     @POST
-    @Path("/viewFundBodyProfile")
-    @Produces(MediaType.TEXT_HTML)
-    public String  viewFundBodyDetails(@FormParam("fid") int fundBodyId) {
-        return fundBodyObj.viewFundBodyProfile(fundBodyId);
+    @Path("/update")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String update(String fundBodyData)
+    {
+        JsonObject obj = new JsonParser().parse(fundBodyData).getAsJsonObject();
+
+        String fid = obj.get("fid").getAsString();
+        String name = obj.get("name").getAsString();
+        String address = obj.get("address").getAsString();
+        String email = obj.get("email").getAsString();
+        String projectname = obj.get("projectname").getAsString();
+        String innovatorname = obj.get("innovatorname").getAsString();
+        String fundaamount = obj.get("fundamount").getAsString();
+        String fundplan = obj.get("fundplan").getAsString();
+
+        fundBodyObj.update(fid, name, address, email, projectname, innovatorname, fundaamount, fundplan);
+        return null;
+    }
+
+    @POST
+    @Path("/delete")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String delete(String fundBodyData)
+    {
+        JsonObject obj = new JsonParser().parse(fundBodyData).getAsJsonObject();
+        String fid = obj.get("fid").getAsString();
+        fundBodyObj.delete(fid);
+        return null;
+    }
+
+    @POST
+    @Path("/view")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public JSONArray viewInnovator(String fundBodyData) {
+        JsonObject obj = new JsonParser().parse(fundBodyData).getAsJsonObject();
+        int fid = Integer.parseInt(obj.get("fid").getAsString());
+        return fundBodyObj.getInnovator(fid);
     }
 
 
