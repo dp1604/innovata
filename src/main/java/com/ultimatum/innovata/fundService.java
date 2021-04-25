@@ -76,10 +76,10 @@ public class fundService {
     @Path("/view")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public JSONArray viewInnovator(String fundBodyData) {
+    public JSONArray viewFundDetail(String fundBodyData) {
         JsonObject obj = new JsonParser().parse(fundBodyData).getAsJsonObject();
         int fid = Integer.parseInt(obj.get("fid").getAsString());
-        return fundBodyObj.getInnovator(fid);
+        return fundBodyObj.getFundDetail(fid);
     }
 
 

@@ -108,7 +108,7 @@ public class fundBody {
 
     }
 
-    public JSONArray getInnovator(int fid) {
+    public JSONArray getFundDetail(int fid) {
 
         JSONArray output = null;
         try {
@@ -116,7 +116,7 @@ public class fundBody {
                 System.out.println("Error while connecting to the database for reading.");
                 return output;
             }
-            String query = "SELECT * FROM fundBodyObj WHERE iid = ?";
+            String query = "SELECT * FROM fundBodyObj WHERE fid = ?";
             PreparedStatement stm = con.prepareStatement(query);
             stm.setInt(1,fid);
             ResultSet rs = stm.executeQuery();
