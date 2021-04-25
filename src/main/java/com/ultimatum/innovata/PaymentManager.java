@@ -2,7 +2,8 @@ package com.ultimatum.innovata;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.ultimatum.model.Innovator;
+
+//import com.ultimatum.model.Innovator;
 import com.ultimatum.model.Payment;
 import org.json.JSONArray;
 

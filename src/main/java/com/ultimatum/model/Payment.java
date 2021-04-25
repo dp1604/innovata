@@ -23,7 +23,7 @@ public class Payment {
                 System.out.println("Error while connecting to the database for inserting.");
                 return;
             }
-            String query = " insert into innovator(`pname`,`paddress`,`pemail`,`ptel`,`pamount`)"+ " values (?, ?, ?, ?,?)";
+            String query = " insert into payment(`pname`,`paddress`,`pemail`,`ptel`,`pamount`)"+ " values (?, ?, ?, ?,?)";
             PreparedStatement preparedStmt = con.prepareStatement(query);
 
             preparedStmt.setString(1, pname);
@@ -46,7 +46,7 @@ public class Payment {
                 return output;
             }
 
-            String query = "select * from innovator";
+            String query = "select * from payment";
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
@@ -103,10 +103,10 @@ public class Payment {
         JSONArray output = null;
         try {
             if (con == null) {
-                System.out.println("Error while connecting to the database for reading.");
+                System.out.println("Error while connecting to the database.");
                 return output;
             }
-            String query = "SELECT * FROM innovator WHERE pid = ?";
+            String query = "SELECT * FROM payment WHERE pid = ?";
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setInt(1,pid);
             ResultSet rs = stmt.executeQuery();
